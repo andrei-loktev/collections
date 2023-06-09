@@ -6,12 +6,11 @@ import com.example.collections.exception.EmployeeNotFoundException;
 import com.example.collections.exception.EmployeeStorageIsFullException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ServiceEmployee {
-    private final List<Employee> employees = new ArrayList<>();
+    private final Map<String, Employee> employees = new HashMap<>();
     private static final int MAX_SIZE = 5;
 
     public Employee add(String firstName, String lastName) {
@@ -19,33 +18,31 @@ public class ServiceEmployee {
             throw new EmployeeStorageIsFullException();
         }
         Employee employeeToAdd = new Employee(firstName, lastName);
-        if (employees.contains(employeeToAdd)) {
+        if (employees.containsKey(employeeToAdd.getFullName())) {
             throw new EmployeeAlreadyAddedException();
         }
-        employees.add(employeeToAdd);
+        employees.put(employeeToAdd.getFullName(), employeeToAdd);
         return employeeToAdd;
     }
 
     public Employee remove(String firstName, String lastName) {
         Employee employeeToRemove = new Employee(firstName, lastName);
-        if (!employees.contains(employeeToRemove)) {
+        if (!employees.containsKey(employeeToRemove.getFullName())) {
             throw new EmployeeNotFoundException();
         }
-        employees.remove(employeeToRemove);
-        return employeeToRemove;
+        return employees.remove(employeeToRemove.getFullName());
+
     }
 
     public Employee find(String firstName, String lastName) {
-        for (Employee employee : employees) {
-            if (firstName.equalsIgnoreCase(employee.getFirstName())
-                    && lastName.equalsIgnoreCase(employee.getLastName())) {
-                return employee;
-            }
+        Employee employee = new Employee(firstName, lastName);
+        if (!employees.containsKey(employee.getFullName())) {
+            return employees.get(employee.getFullName());
         }
         throw new EmployeeNotFoundException();
     }
 
-    public List<Employee> getAll(){
-        return employees;
+    public List<Employee> getAll() {
+        return Collections.unmodifiableList(new ArrayList<>(employees.values()));
     }
 }

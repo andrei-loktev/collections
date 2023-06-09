@@ -8,32 +8,35 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {
-    private final ServiceEmployee serviceEmployee;
+    private final ServiceEmployee service;
 
     public EmployeeController(ServiceEmployee service) {
-        this.serviceEmployee = service;
+        this.service = service;
     }
 
     @GetMapping("add")
-    public Employee add(@RequestParam("firstName")String firstName , @RequestParam("lastName") String lastName ) {
-        return serviceEmployee.add(firstName, lastName);
+    public Employee add(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
+        return service.add(firstName, lastName);
     }
+
     @GetMapping("remove")
-    public Employee remove(@RequestParam("firstName")String firstName , @RequestParam("lastName") String lastName ) {
-        return serviceEmployee.remove(firstName, lastName);
+    public Employee remove(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
+        return service.remove(firstName, lastName);
     }
+
     @GetMapping("find")
-    public Employee find(@RequestParam("firstName")String firstName , @RequestParam("lastName") String lastName ) {
-        return serviceEmployee.find(firstName, lastName);
+    public Employee find(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
+        return service.find(firstName, lastName);
     }
 
     @GetMapping("all")
-    public List<Employee> all(){
-        return serviceEmployee.getAll();
+    public List<Employee> all() {
+        return service.getAll();
     }
 }
 

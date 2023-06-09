@@ -15,6 +15,8 @@ public class Employee {
 
     public String getLastName() {return lastName;}
 
+    public String getFullName(){return firstName + " " + lastName;}
+
     public void setFirstName(String firstName) {this.firstName = firstName;}
 
     public void setLastName(String lastName) {this.lastName = lastName;}
